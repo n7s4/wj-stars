@@ -21,3 +21,25 @@
 
 在 `package.json` 中增加 scripts `"lint": " eslint 'src/**/*.+(js|ts|jsx|tsx)' "`
 控制台运行 `npm run lint` 也可以看到错误提示。如果要自动修复，可以加 `--fix` 参数
+
+#路由设计
+
+## 页面对应的路由
+
+- 首页 `/`
+- 登录 `/login`
+- 注册 `/register`
+- 问卷管理
+  - 我的问卷 `/manage/list`
+  - 星标问卷 `/manage/star`
+  - 回收站 `/manage/trash`
+- 问卷详情
+  - 编辑问卷 `/question/edit/:id`
+  - 问卷统计 `/question/stat/:id`
+- 404
+
+## Layout 模板
+
+- MainLayout
+- ManageLayout
+- QuestionLayout
