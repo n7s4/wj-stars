@@ -1,13 +1,9 @@
 import React, { useEffect } from "react";
 import List from "./pages/manage/List";
-
+import { RouterProvider } from "react-router-dom";
+import routerConfig from "./router";
 function App() {
-  return (
-    <div style={{ background: "#f1f1f1" }}>
-      <p style={{ background: "black", color: "white" }}>hello FE</p>
-      <List />
-    </div>
-  );
+  return <RouterProvider router={routerConfig} />;
 }
 
 export default App;
