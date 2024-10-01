@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import List from "./pages/List";
 
 function App() {
   useEffect(() => {
@@ -7,6 +8,7 @@ function App() {
   return (
     <>
       <p>hello FE</p>
+      <List />
     </>
   );
 }
