@@ -1,5 +1,13 @@
 import React, { FC } from "react";
-import { Typography, Space, Form, Button, Checkbox, Input } from "antd";
+import {
+  Typography,
+  Space,
+  Form,
+  Button,
+  Checkbox,
+  Input,
+  message,
+} from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import styles from "./register.module.scss";
 import { Link } from "react-router-dom";
@@ -12,6 +20,27 @@ type FieldType = {
   password?: string;
   remember?: string;
   password2?: string;
+};
+const formRules = {
+  usernam: [
+    {
+      required: true,
+      message: "请输入2到12的用户名",
+
+      min: 2,
+      max: 12,
+    },
+  ],
+  nickname: [
+    {
+      required: true,
+      message: "请输入2到12的昵称",
+      pattern: /^[a-zA-Z0-9_-]{2,12}$/,
+    },
+  ],
+  password: [
+    { required: true, message: "请输入6-20位的密码", min: 6, nax: 20 },
+  ],
 };
 const Register: FC = () => {
   const onFished = (values: FieldType) => {
@@ -40,14 +69,14 @@ const Register: FC = () => {
           <Form.Item<FieldType>
             label="用户名"
             name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={formRules.usernam}
           >
             <Input />
           </Form.Item>
           <Form.Item<FieldType>
             label="昵称"
             name="nickname"
-            rules={[{ required: true, message: "Please input your nickname!" }]}
+            rules={formRules.nickname}
           >
             <Input />
           </Form.Item>
@@ -55,14 +84,25 @@ const Register: FC = () => {
           <Form.Item<FieldType>
             label="密码"
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={formRules.password}
           >
             <Input.Password />
           </Form.Item>
           <Form.Item<FieldType>
             label="确认密码"
             name="password2"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            dependencies={["password"]}
+            rules={[
+              { required: true, message: "请再次输入密码" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("两次密码不一致"));
+                },
+              }),
+            ]}
           >
             <Input.Password />
           </Form.Item>
@@ -72,7 +112,7 @@ const Register: FC = () => {
             valuePropName="checked"
             wrapperCol={{ offset: 8, span: 24 }}
           >
-            <Checkbox>Remember me</Checkbox>
+            <Checkbox>记住我</Checkbox>
           </Form.Item>
 
           <Form.Item wrapperCol={{ offset: 8, span: 24 }}>
