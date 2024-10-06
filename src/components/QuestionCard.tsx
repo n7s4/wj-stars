@@ -11,7 +11,7 @@ import {
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
 import Title from "antd/es/skeleton/Title";
-type PropsType = {
+export type questionType = {
   _id: string;
   title: string;
   isPublished: boolean;
@@ -19,7 +19,7 @@ type PropsType = {
   answerCount: number;
   createAt: string;
 };
-const QuestionCard: FC<PropsType> = (props: PropsType) => {
+const QuestionCard: FC<questionType> = (props: questionType) => {
   const { _id, title, isPublished, isStar, answerCount, createAt } = props;
   const nav = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
