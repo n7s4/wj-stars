@@ -7,7 +7,7 @@ import Home from "../pages/Home";
 import List from "../pages/manage/List";
 import NotFound from "../pages/NotFound";
 import Register from "../pages/Register";
-import Star from "../pages/Star";
+import Star from "../pages/Star/index";
 import Login from "../pages/Login";
 import Trash from "../pages/Trash";
 import Edit from "../pages/question/Edit";

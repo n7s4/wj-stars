@@ -1,8 +1,9 @@
 import React, { FC, useState } from "react";
 import QuestionCard from "../../components/QuestionCard";
-import styles from "./List.module.scss";
+import styles from "./Common.module.scss";
 import { useSearchParams } from "react-router-dom";
 import { useTitle } from "ahooks";
+import { Typography } from "antd";
 const rawQuestionList = [
   {
     _id: "q1",
@@ -15,8 +16,8 @@ const rawQuestionList = [
   {
     _id: "q2",
     title: "问卷2",
-    isPublished: false,
-    isStar: false,
+    isPublished: true,
+    isStar: true,
     answerCount: 10,
     createAt: "2022-02-02",
   },
@@ -37,6 +38,7 @@ const rawQuestionList = [
     createAt: "2022-02-02",
   },
 ];
+const { Title } = Typography;
 const List: FC = () => {
   useTitle("调查君 - 我的问卷");
   const [questionList, setQuestionList] = useState(rawQuestionList);
@@ -45,17 +47,19 @@ const List: FC = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>我的问卷</h3>
+          <Title>我的问卷</Title>
         </div>
         <div className={styles.right}>（搜索）</div>
       </div>
       <div className={styles.content}>
-        {questionList.map((q) => {
-          const { _id, title } = q;
-          return <QuestionCard key={_id} {...q} />;
-        })}
+        {/* 问卷列表 */}
+        {questionList.length > 0 &&
+          questionList.map((q) => {
+            const { _id, title } = q;
+            return <QuestionCard key={_id} {...q} />;
+          })}
       </div>
-      <div className={styles.footer}>footer</div>
+      <div className={styles.footer}>LoadMore ......加载更多</div>
     </>
   );
 };

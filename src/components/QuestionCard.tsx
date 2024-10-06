@@ -1,6 +1,16 @@
 import React, { FC } from "react";
 import styles from "./QuestionCard.module.scss";
-import { Button } from "antd";
+import { Button, Space, Divider, Tag, message, Modal } from "antd";
+import {
+  CopyOutlined,
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  LineChartOutlined,
+  StarOutlined,
+} from "@ant-design/icons";
+import { useNavigate, Link } from "react-router-dom";
+import Title from "antd/es/skeleton/Title";
 type PropsType = {
   _id: string;
   title: string;
@@ -11,38 +21,92 @@ type PropsType = {
 };
 const QuestionCard: FC<PropsType> = (props: PropsType) => {
   const { _id, title, isPublished, isStar, answerCount, createAt } = props;
+  const nav = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const { confirm } = Modal;
+  const duplicate = () => {
+    messageApi.open({
+      type: "success",
+      content: "复制成功",
+    });
+  };
+  const handleDle = () => {
+    confirm({
+      title: "确定要删除吗？",
+      cancelText: "取消",
+      okText: "确定",
+      content: "删除后无法恢复，确定要删除吗？",
+      icon: <ExclamationCircleOutlined />,
+      onOk: () => {
+        message.success("删除成功");
+      },
+    });
+  };
   return (
-    <>
-      <div className={styles.container}>
-        <div className={styles.title}>
-          <div className={styles.left}>
-            <a href="">{title}</a>
-          </div>
-          <div className={styles.right}>
-            {isPublished ? (
-              <span style={{ color: "green" }}>已发布</span>
-            ) : (
-              <span>未发布</span>
-            )}
-            &nbsp;
-            <span>答卷:{answerCount}</span>
-            &nbsp;
-            <span>{createAt}</span>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.title}>
+        <div className={styles.left}>
+          <Link
+            to={isPublished ? `/question/stat/${_id}` : `/question/edit/${_id}`}
+          >
+            <Space>
+              {isStar && <StarOutlined style={{ color: "red" }} />}
+              {title}
+            </Space>
+          </Link>
         </div>
-        <div className={styles["button-container"]}>
-          <div className={styles.left}>
-            <Button>编辑问卷</Button>
-            <Button>数据统计</Button>
-          </div>
-          <div className={styles.right}>
-            <Button>标星</Button>
-            <Button>复制</Button>
-            <Button>删除</Button>
-          </div>
+        <div className={styles.right}>
+          <Space>
+            {isPublished ? (
+              <Tag color="processing">已发布</Tag>
+            ) : (
+              <Tag>未发布</Tag>
+            )}
+            <span>答卷:{answerCount}</span>
+
+            <span>{createAt}</span>
+          </Space>
         </div>
       </div>
-    </>
+      <Divider style={{ margin: "12px 0" }} />
+      <div className={styles["button-container"]}>
+        <div className={styles.left}>
+          {contextHolder}
+          <Space>
+            <Button
+              icon={<EditOutlined />}
+              type="text"
+              size="small"
+              onClick={() => nav(`/question/edit/${_id}`)}
+            >
+              编辑问卷
+            </Button>
+            <Button
+              icon={<LineChartOutlined />}
+              type="text"
+              size="small"
+              onClick={() => nav(`/question/stat/${_id}`)}
+              disabled={!isPublished}
+            >
+              数据统计
+            </Button>
+          </Space>
+        </div>
+        <div className={styles.right}>
+          <Space>
+            <Button icon={<StarOutlined />} size="small" type="text">
+              {isStar ? "取消标星" : "标星"}
+            </Button>
+            <Button icon={<CopyOutlined />} type="text" onClick={duplicate}>
+              复制
+            </Button>
+            <Button icon={<DeleteOutlined />} type="text" onClick={handleDle}>
+              删除
+            </Button>
+          </Space>
+        </div>
+      </div>
+    </div>
   );
 };
 export default QuestionCard;
