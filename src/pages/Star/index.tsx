@@ -42,7 +42,7 @@ const Star: FC = () => {
             return <QuestionCard key={_id} {...q} />;
           })}
       </div>
-      <div className={styles.foooter}></div>
+      <div className={styles.foooter}>分页</div>
     </>
   );
 };
