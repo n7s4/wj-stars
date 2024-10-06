@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import styles from "./QuestionCard.module.scss";
+import { Button } from "antd";
 type PropsType = {
   _id: string;
   title: string;
@@ -31,13 +32,13 @@ const QuestionCard: FC<PropsType> = (props: PropsType) => {
         </div>
         <div className={styles["button-container"]}>
           <div className={styles.left}>
-            <button>编辑问卷</button>
-            <button>数据统计</button>
+            <Button>编辑问卷</Button>
+            <Button>数据统计</Button>
           </div>
           <div className={styles.right}>
-            <button>标星</button>
-            <button>复制</button>
-            <button>删除</button>
+            <Button>标星</Button>
+            <Button>复制</Button>
+            <Button>删除</Button>
           </div>
         </div>
       </div>
