@@ -8,9 +8,6 @@ import axios from "axios";
 const { Title, Paragraph } = Typography;
 const Home: FC = () => {
   const nav = useNavigate();
-  useEffect(() => {
-    axios.get("/api/test").then((res) => console.log("res", res.data));
-  }, []);
 
   return (
     <div className={styles.container}>

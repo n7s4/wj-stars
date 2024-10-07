@@ -1,49 +1,16 @@
-import React, { FC, useState } from "react";
+// eslint-disable-next-line
+import React, { FC, useEffect, useState } from "react";
 import QuestionCard from "../../components/QuestionCard";
 import styles from "./Common.module.scss";
-import { useSearchParams } from "react-router-dom";
-import { useTitle } from "ahooks";
+import { useRequest, useTitle } from "ahooks";
 import { Typography } from "antd";
 import ListSearch from "../../components/ListSearch";
-const rawQuestionList = [
-  {
-    _id: "q1",
-    title: "问卷1",
-    isPublished: true,
-    isStar: false,
-    answerCount: 10,
-    createAt: "2024-10-01",
-  },
-  {
-    _id: "q2",
-    title: "问卷2",
-    isPublished: true,
-    isStar: true,
-    answerCount: 10,
-    createAt: "2022-02-02",
-  },
-  {
-    _id: "q3",
-    title: "问卷3",
-    isPublished: false,
-    isStar: false,
-    answerCount: 10,
-    createAt: "2022-02-02",
-  },
-  {
-    _id: "q4",
-    title: "问卷4",
-    isPublished: false,
-    isStar: false,
-    answerCount: 10,
-    createAt: "2022-02-02",
-  },
-];
+import { getQuestionListService } from "../../servers/question";
 const { Title } = Typography;
 const List: FC = () => {
   useTitle("调查君 - 我的问卷");
-  const [questionList, setQuestionList] = useState(rawQuestionList);
-  const [searchParams] = useSearchParams();
+  const { data = {} } = useRequest(getQuestionListService);
+  const { list = [] } = data;
   return (
     <>
       <div className={styles.header}>
@@ -54,9 +21,9 @@ const List: FC = () => {
       </div>
       <div className={styles.content}>
         {/* 问卷列表 */}
-        {questionList.length > 0 &&
-          questionList.map((q) => {
-            const { _id, title } = q;
+        {list.length > 0 &&
+          list.map((q: any) => {
+            const { _id } = q;
             return <QuestionCard key={_id} {...q} />;
           })}
       </div>
