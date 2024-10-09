@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getQuestionList } from "../servers/question";
+import { getQuestionService } from "../servers/question";
 import { useParams } from "react-router-dom";
 import { useRequest } from "ahooks";
 const useLoadQuestionData = () => {
@@ -8,7 +8,7 @@ const useLoadQuestionData = () => {
   // const [questionData, setQuestionData] = useState({});
   // useEffect(() => {
   //   async function fn() {
-  //     const data = await getQuestionList(id);
+  //     const data = await getQuestionService(id);
   //     setQuestionData(data);
   //     setLoading(false);
   //   }
@@ -16,7 +16,7 @@ const useLoadQuestionData = () => {
   // }, []);
   // return [loading, questionData]
   async function load() {
-    const data = await getQuestionList(id);
+    const data = await getQuestionService(id);
     return data
   }
   const {data, loading, error}= useRequest(load)

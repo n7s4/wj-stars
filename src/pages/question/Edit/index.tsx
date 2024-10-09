@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getQuestionList } from "../../../servers/question";
+import { getQuestionService } from "../../../servers/question";
 import useLoadQuestionData from "../../../hooks/useLoadQuestionData";
 
 const Edit: FC = () => {

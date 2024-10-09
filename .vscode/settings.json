@@ -1,21 +1,91 @@
 {
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": true,
+    "markdown": false,
+    "c": true,
+    "java": true
+  },
+  "files.associations": {
+    "*.html": "html"
+  },
+  "files.autoSave": "onWindowChange",
+  "workbench.colorTheme": "Night Owl (No Italics)",
+  "security.workspace.trust.untrustedFiles": "open",
+  "open-in-browser.default": "Google Chrome",
+  "terminal.integrated.tabs.defaultIcon": "more",
+  "explorer.confirmDelete": false,
+  "vetur.validation.template": false,
+  "vetur.completion.scaffoldSnippetSources": {
+    "workspace": "💼",
+    "user": "🗒️",
+    "vetur": "✌"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "[css]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.tabSize": 2,
+  "tabnine.experimentalAutoImports": true,
+  "workbench.settings.applyToAllProfiles": [
+
+
+    
+  ],
+  "eslint.enable": true, // 开启eslint检查
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit"
+    "source.fixAll": "explicit"
   },
-  "eslint.enable": false,
-  "[markdown]": {
-    // 快速补全
-    "editor.quickSuggestions": {
-      "other": true,
-      "comments": true,
-      "strings": true
-    },
-    // 显示空格
-    "editor.renderWhitespace": "all",
-    // snippet 提示优先（看个人喜欢）
-    "editor.snippetSuggestions": "top",
-    "editor.tabCompletion": "on",
-    // 使用enter 接受提示
-    // "editor.acceptSuggestionOnEnter": "on",
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "eslint.validate": ["javascript", "javascriptreact", "vue", "typescript"], // vue也要eslint验证
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": true
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "stylelint.validate": ["css", "less", "vue", "html", "scss"],
+  "files.associations": {
+    // ....
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "eslint.codeActionsOnSave.rules": null,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "eslint.alwaysShowStatus": true,
+  "stylelint.validate": ["css", "less", "postcss", "scss", "sass"],
+  "workbench.iconTheme": "file-icons"
 }

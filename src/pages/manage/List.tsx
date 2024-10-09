@@ -1,16 +1,16 @@
 // eslint-disable-next-line
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import QuestionCard from "../../components/QuestionCard";
 import styles from "./Common.module.scss";
 import { useRequest, useTitle } from "ahooks";
-import { Typography } from "antd";
+import { Spin, Typography } from "antd";
 import ListSearch from "../../components/ListSearch";
-import { getQuestionListService } from "../../servers/question";
+import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 const { Title } = Typography;
 const List: FC = () => {
   useTitle("调查君 - 我的问卷");
-  const { data = {} } = useRequest(getQuestionListService);
-  const { list = [] } = data;
+  const { data = {}, loading } = useLoadQuestionListData({});
+  const { list = [], total } = data;
   return (
     <>
       <div className={styles.header}>
@@ -20,8 +20,13 @@ const List: FC = () => {
         <div className={styles.right}>{<ListSearch />}</div>
       </div>
       <div className={styles.content}>
+        {loading && (
+          <div style={{ textAlign: "center" }}>
+            <Spin></Spin>
+          </div>
+        )}
         {/* 问卷列表 */}
-        {list.length > 0 &&
+        {(!loading && list.length) > 0 &&
           list.map((q: any) => {
             const { _id } = q;
             return <QuestionCard key={_id} {...q} />;

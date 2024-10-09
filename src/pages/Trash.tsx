@@ -11,27 +11,11 @@ import {
   Space,
   Modal,
   message,
+  Spin,
 } from "antd";
 import styles from "../pages/manage/Common.module.scss";
 import ListSearch from "../components/ListSearch";
-const rawQuestionList: questionType[] = [
-  {
-    _id: "q1",
-    title: "问卷1",
-    isPublished: true,
-    isStar: true,
-    answerCount: 10,
-    createAt: "2024-10-01",
-  },
-  {
-    _id: "q2",
-    title: "问卷2",
-    isPublished: false,
-    isStar: false,
-    answerCount: 10,
-    createAt: "2022-02-02",
-  },
-];
+import useLoadQuestionListData from "../hooks/useLoadQuestionListData";
 const { Title } = Typography;
 const { confirm } = Modal;
 const columns = [
@@ -49,7 +33,8 @@ const columns = [
 ];
 const Trash: FC = () => {
   useTitle("调查君 - 回收站 ");
-  const [questionList, ssetQuestionList] = useState(rawQuestionList);
+  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const { list = [], total } = data as any;
   const [selectIds, setSelectIds] = useState<string[]>([]);
   const del = () => {
     confirm({
@@ -77,10 +62,10 @@ const Trash: FC = () => {
       </div>
 
       <Table
-        dataSource={questionList}
+        dataSource={list}
         columns={columns}
         pagination={false}
-        rowKey={(record) => record._id}
+        rowKey={(q: any) => q._id}
         rowSelection={{
           type: "checkbox",
           onChange: (selectionKey) => {
@@ -102,8 +87,13 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length == 0 && <Empty description="暂无数据" />}
-        {questionList.length > 0 && TableElement}
+        {loading && (
+          <div>
+            <Spin style={{ textAlign: "center" }}></Spin>
+          </div>
+        )}
+        {!loading && list.length == 0 && <Empty description="暂无数据" />}
+        {list.length > 0 && TableElement}
       </div>
       <div className={styles.foooter}>分页</div>
     </>
