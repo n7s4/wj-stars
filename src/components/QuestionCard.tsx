@@ -14,13 +14,13 @@ import Title from "antd/es/skeleton/Title";
 export type questionType = {
   _id: string;
   title: string;
-  isPublished: boolean;
+  isPublish: boolean;
   isStar: boolean;
   answerCount: number;
   createAt: string;
 };
 const QuestionCard: FC<questionType> = (props: questionType) => {
-  const { _id, title, isPublished, isStar, answerCount, createAt } = props;
+  const { _id, title, isPublish, isStar, answerCount, createAt } = props;
   const nav = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const { confirm } = Modal;
@@ -47,7 +47,7 @@ const QuestionCard: FC<questionType> = (props: questionType) => {
       <div className={styles.title}>
         <div className={styles.left}>
           <Link
-            to={isPublished ? `/question/stat/${_id}` : `/question/edit/${_id}`}
+            to={isPublish ? `/question/stat/${_id}` : `/question/edit/${_id}`}
           >
             <Space>
               {isStar && <StarOutlined style={{ color: "red" }} />}
@@ -57,7 +57,7 @@ const QuestionCard: FC<questionType> = (props: questionType) => {
         </div>
         <div className={styles.right}>
           <Space>
-            {isPublished ? (
+            {isPublish ? (
               <Tag color="processing">已发布</Tag>
             ) : (
               <Tag>未发布</Tag>
@@ -86,7 +86,7 @@ const QuestionCard: FC<questionType> = (props: questionType) => {
               type="text"
               size="small"
               onClick={() => nav(`/question/stat/${_id}`)}
-              disabled={!isPublished}
+              disabled={!isPublish}
             >
               数据统计
             </Button>

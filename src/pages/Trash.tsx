@@ -16,14 +16,15 @@ import {
 import styles from "../pages/manage/Common.module.scss";
 import ListSearch from "../components/ListSearch";
 import useLoadQuestionListData from "../hooks/useLoadQuestionListData";
+import ListPage from "../components/ListPage";
 const { Title } = Typography;
 const { confirm } = Modal;
 const columns = [
   { title: "标题", dataIndex: "title", key: "title" },
   {
     title: "发布状态",
-    dataIndex: "isPublished",
-    key: "isPublished",
+    dataIndex: "isPublish",
+    key: "isPublish",
     render: (value: boolean) => (
       <Tag color={value ? "green" : "blue"}>{value ? "已发布" : "未发布"}</Tag>
     ),
@@ -95,7 +96,9 @@ const Trash: FC = () => {
         {!loading && list.length == 0 && <Empty description="暂无数据" />}
         {list.length > 0 && TableElement}
       </div>
-      <div className={styles.foooter}>分页</div>
+      <div className={styles.foooter}>
+        <ListPage total={total} />
+      </div>
     </>
   );
 };

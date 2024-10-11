@@ -2,9 +2,10 @@ import React, { FC, useState } from "react";
 import QuestionCard, { questionType } from "../../components/QuestionCard";
 import { useSearchParams } from "react-router-dom";
 import { useTitle } from "ahooks";
-import { Empty, Spin, Typography } from "antd";
+import { Empty, Spin, Typography, Pagination } from "antd";
 import styles from "../manage/Common.module.scss";
 import ListSearch from "../../components/ListSearch";
+import ListPage from "../../components/ListPage";
 import useLoadQuestionListData from "../../hooks/useLoadQuestionListData";
 const { Title } = Typography;
 const Star: FC = () => {
@@ -32,7 +33,9 @@ const Star: FC = () => {
             return <QuestionCard key={_id} {...q} />;
           })}
       </div>
-      <div className={styles.foooter}>分页</div>
+      <div className={styles.foooter}>
+        <ListPage total={total} />
+      </div>
     </>
   );
 };
