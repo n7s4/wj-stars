@@ -1,10 +1,25 @@
-import { Button, Checkbox, Form, Input, Space, Typography } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  message,
+  Space,
+  Typography,
+} from "antd";
 import React, { FC, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./login.module.scss";
-import { REGISTER_PATHNAME } from "../router";
+import {
+  HOME_PATHNAME,
+  MANAGE_LIST_PATHNAME,
+  REGISTER_PATHNAME,
+} from "../router";
 import { UserOutlined } from "@ant-design/icons";
 import { useForm } from "antd/es/form/Form";
+import { useRequest } from "ahooks";
+import { loginService } from "../servers/user";
+import { setToken } from "../utills/user-token";
 type FieldType = {
   username: string;
   nickname?: string;
@@ -34,7 +49,25 @@ const Login: FC = () => {
     const { username, password } = getUserFromLocalStorage();
     form.setFieldsValue({ username, password });
   }, []);
+  const nav = useNavigate();
+  const { run } = useRequest(
+    async (username: string, password: string) => {
+      const data = await loginService(username, password);
+      return data;
+    },
+    {
+      manual: true,
+      onSuccess: (result) => {
+        const { token = "" } = result;
+        setToken(token);
+        nav(MANAGE_LIST_PATHNAME); // 导航到我的问卷
+        message.success("登录成功");
+      },
+    }
+  );
   const onFished = (values: FieldType) => {
+    const { username, password } = values || {};
+    run(username, password);
     if (values.remember) {
       const { username, password } = values || {};
       remeberUser(username, password);

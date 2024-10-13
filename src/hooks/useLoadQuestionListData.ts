@@ -12,7 +12,7 @@ const useLoadQuestionListData = (opt: Partial<Option>) => {
   const page = searchParams.get("page");
   const pageSize = searchParams.get("pageSize");
 
-  const { data, error, loading } = useRequest(
+  const { data, error, loading, refresh } = useRequest(
     async () => {
       const keyword = searchParams.get(LIST_SEARCH_PARAM_KEY) || "";
       const page = parseInt(searchParams.get(LIST_PAGE_PARAM_KEY) || "") || 1
@@ -28,6 +28,7 @@ const useLoadQuestionListData = (opt: Partial<Option>) => {
     data,
     error,
     loading,
+    refresh
   };
 };
 export default useLoadQuestionListData;

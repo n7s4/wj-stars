@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import styles from "./QuestionCard.module.scss";
 import { Button, Space, Divider, Tag, message, Modal } from "antd";
 import {
@@ -10,7 +10,11 @@ import {
   StarOutlined,
 } from "@ant-design/icons";
 import { useNavigate, Link } from "react-router-dom";
-import Title from "antd/es/skeleton/Title";
+import { useRequest } from "ahooks";
+import {
+  duplicateQuestionService,
+  updateQuestionService,
+} from "../servers/question";
 export type questionType = {
   _id: string;
   title: string;
@@ -21,16 +25,59 @@ export type questionType = {
 };
 const QuestionCard: FC<questionType> = (props: questionType) => {
   const { _id, title, isPublish, isStar, answerCount, createAt } = props;
+
+  // 修改标星
+  const [isStarState, setIsStarState] = useState(isStar);
+  const { run: changeStar, loading: changeLoadingStar } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isStar: !isStarState });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        setIsStarState(!isStarState);
+        messageApi.open({
+          type: "success",
+          content: "更新成功",
+        });
+      },
+    }
+  );
   const nav = useNavigate();
   const [messageApi, contextHolder] = message.useMessage();
   const { confirm } = Modal;
-  const duplicate = () => {
-    messageApi.open({
-      type: "success",
-      content: "复制成功",
-    });
-  };
-  const handleDle = () => {
+
+  // 复制
+  const { run: duplicate, loading: duplicateLoading } = useRequest(
+    async () => {
+      const data = await duplicateQuestionService(_id);
+      return data;
+    },
+    {
+      manual: true,
+      onSuccess(res) {
+        message.success("复制成功");
+        nav(`/question/edit/${res.id}`); // 跳转到编辑页
+      },
+    }
+  );
+
+  // 假删除单个问卷
+  const [isDeletedState, setIsDeletedState] = useState(false);
+  const { run: handleDle, loading: deleteLoading } = useRequest(
+    async () => {
+      await updateQuestionService(_id, { isDeleted: true });
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success("删除成功");
+        setIsDeletedState(true);
+      },
+    }
+  );
+
+  const del = () => {
     confirm({
       title: "确定要删除吗？",
       cancelText: "取消",
@@ -38,10 +85,12 @@ const QuestionCard: FC<questionType> = (props: questionType) => {
       content: "删除后无法恢复，确定要删除吗？",
       icon: <ExclamationCircleOutlined />,
       onOk: () => {
-        message.success("删除成功");
+        handleDle();
       },
     });
   };
+  // 已经删除的问卷不需要渲染卡片了
+  if (isDeletedState) return null;
   return (
     <div className={styles.container}>
       <div className={styles.title}>
@@ -50,7 +99,7 @@ const QuestionCard: FC<questionType> = (props: questionType) => {
             to={isPublish ? `/question/stat/${_id}` : `/question/edit/${_id}`}
           >
             <Space>
-              {isStar && <StarOutlined style={{ color: "red" }} />}
+              {isStarState && <StarOutlined style={{ color: "red" }} />}
               {title}
             </Space>
           </Link>
@@ -94,13 +143,29 @@ const QuestionCard: FC<questionType> = (props: questionType) => {
         </div>
         <div className={styles.right}>
           <Space>
-            <Button icon={<StarOutlined />} size="small" type="text">
-              {isStar ? "取消标星" : "标星"}
+            <Button
+              icon={<StarOutlined />}
+              size="small"
+              type="text"
+              onClick={changeStar}
+              disabled={changeLoadingStar}
+            >
+              {isStarState ? "取消标星" : "标星"}
             </Button>
-            <Button icon={<CopyOutlined />} type="text" onClick={duplicate}>
+            <Button
+              icon={<CopyOutlined />}
+              type="text"
+              onClick={duplicate}
+              disabled={duplicateLoading}
+            >
               复制
             </Button>
-            <Button icon={<DeleteOutlined />} type="text" onClick={handleDle}>
+            <Button
+              icon={<DeleteOutlined />}
+              type="text"
+              onClick={del}
+              disabled={deleteLoading}
+            >
               删除
             </Button>
           </Space>

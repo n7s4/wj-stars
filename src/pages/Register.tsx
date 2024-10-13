@@ -10,8 +10,10 @@ import {
 } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import styles from "./register.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_PATHNAME } from "../router";
+import { useRequest } from "ahooks";
+import { registerService } from "../servers/user";
 
 const { Title } = Typography;
 type FieldType = {
@@ -43,8 +45,23 @@ const formRules = {
   ],
 };
 const Register: FC = () => {
+  const nav = useNavigate();
+  const { run } = useRequest(
+    async (values) => {
+      const { username, password, nickname, password2 } = values;
+      await registerService(username, password, nickname);
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success("注册成功");
+        nav(LOGIN_PATHNAME);
+      },
+    }
+  );
   const onFished = (values: FieldType) => {
     console.log("Success:", values);
+    run(values);
   };
   return (
     <div className={styles.container}>

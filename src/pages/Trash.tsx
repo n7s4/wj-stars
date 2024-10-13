@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import QuestionCard, { questionType } from "../components/QuestionCard";
 import { useSearchParams } from "react-router-dom";
-import { useTitle } from "ahooks";
+import { useRequest, useTitle } from "ahooks";
 import {
   Empty,
   Typography,
@@ -17,6 +17,10 @@ import styles from "../pages/manage/Common.module.scss";
 import ListSearch from "../components/ListSearch";
 import useLoadQuestionListData from "../hooks/useLoadQuestionListData";
 import ListPage from "../components/ListPage";
+import {
+  deleteQuestionService,
+  updateQuestionService,
+} from "../servers/question";
 const { Title } = Typography;
 const { confirm } = Modal;
 const columns = [
@@ -34,21 +38,53 @@ const columns = [
 ];
 const Trash: FC = () => {
   useTitle("调查君 - 回收站 ");
-  const { data = {}, loading } = useLoadQuestionListData({ isDeleted: true });
+  const {
+    data = {},
+    loading,
+    refresh,
+  } = useLoadQuestionListData({ isDeleted: true });
   const { list = [], total } = data as any;
   const [selectIds, setSelectIds] = useState<string[]>([]);
+  // 彻底删除
   const del = () => {
     confirm({
       title: "确定删除吗？",
       content: "彻底删除以后不可以找回，确认要删除嘛？",
       onOk() {
-        message.success(`彻底删除成功${selectIds}`);
-      },
-      onCancel() {
-        console.log("删除失败");
+        deleteQuestion();
+        refresh();
+        setSelectIds([]);
       },
     });
   };
+  const { run: deleteQuestion } = useRequest(
+    async () => {
+      await deleteQuestionService(selectIds);
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success(`彻底删除成功${selectIds}`);
+      },
+    }
+  );
+
+  // 恢复
+  const { run: recover } = useRequest(
+    async () => {
+      for await (const id of selectIds) {
+        await updateQuestionService(id, { isDeleted: false });
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess() {
+        message.success("恢复成功");
+        refresh(); // 手动刷新列表
+      },
+    }
+  );
   const TableElement = (
     <>
       <div style={{ marginBottom: "16px" }}>
@@ -56,7 +92,11 @@ const Trash: FC = () => {
           <Button danger disabled={selectIds.length === 0} onClick={del}>
             彻底删除
           </Button>
-          <Button type="primary" disabled={selectIds.length === 0}>
+          <Button
+            type="primary"
+            disabled={selectIds.length === 0}
+            onClick={recover}
+          >
             恢复
           </Button>
         </Space>
@@ -84,7 +124,6 @@ const Trash: FC = () => {
         </div>
         <div className={styles.right}>
           <ListSearch />
-          {selectIds}
         </div>
       </div>
       <div className={styles.content}>
