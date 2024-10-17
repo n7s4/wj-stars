@@ -42,6 +42,7 @@ const ListPage: FC<PageType> = (props: PageType) => {
         current={current}
         total={total}
         onChange={handleChangePage}
+        align="center"
       />
     </div>
   );
