@@ -7,12 +7,16 @@ import { useRequest } from "ahooks";
 import { getUserInfoService } from "../servers/user";
 import { UserOutlined } from "@ant-design/icons";
 import { removeToken } from "../utills/user-token";
+import useGetUserInfo from "../hooks/useGetUserInfo";
+import { logoutReducer } from "../store/userReducer";
+import { useDispatch } from "react-redux";
 
 const UserInfo: FC = () => {
   const nav = useNavigate();
-  const { data } = useRequest(getUserInfoService);
-  const { username, nickname } = data || {};
+  const { username, nickname } = useGetUserInfo();
+  const dispatch = useDispatch();
   const logOut = () => {
+    dispatch(logoutReducer());
     removeToken();
     nav(LOGIN_PATHNAME);
     message.success("退出成功");
