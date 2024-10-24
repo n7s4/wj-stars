@@ -20,8 +20,7 @@ const useLoadQuestionData = () => {
     if(!data) return
 
     const {title = '', componentList = []}  = data 
-    dispatch(resetComponents({componentList}))
-    
+    dispatch(resetComponents({componentList, selectedId: ''}))
   }, [data])
 
   useEffect(() => {
