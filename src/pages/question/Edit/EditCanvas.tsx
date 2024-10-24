@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, MouseEvent } from "react";
 import styles from "./editCanvas.module.scss";
 import { Spin } from "antd";
 import useGetComponentsInfo from "../../../hooks/useGetComponentsInfo";
@@ -26,9 +26,9 @@ const EditCanvas: FC<PropsType> = (props: PropsType) => {
   const dispatch = useDispatch();
 
   // 点击组件，讲组件的id存到redux
-  const handleClick = (id: string) => {
+  const handleClick = (event: MouseEvent, id: string) => {
+    event.stopPropagation();
     dispatch(changeSelectedId(id));
-    console.log(selectedId);
   };
   if (loading)
     return (
@@ -50,7 +50,7 @@ const EditCanvas: FC<PropsType> = (props: PropsType) => {
           <div
             key={fe_id}
             className={wrapperClassName}
-            onClick={() => handleClick(fe_id)}
+            onClick={(e) => handleClick(e, fe_id)}
           >
             <div className={styles.component}>{genComponent(c)}</div>
           </div>
