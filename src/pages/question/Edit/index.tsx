@@ -7,6 +7,8 @@ import EditCanvas from "./EditCanvas";
 import { changeSelectedId } from "../../../store/componentReducer";
 import { useDispatch } from "react-redux";
 import LeftPanel from "./LeftPanel";
+import RightPanel from "./RightPanel";
+import EditHeader from "./EditHeader";
 
 const Edit: FC = () => {
   // 自定义 hooks
@@ -17,7 +19,9 @@ const Edit: FC = () => {
   };
   return (
     <div className={styles.container}>
-      <div style={{ backgroundColor: "white", height: "40px" }}>header</div>
+      <div>
+        <EditHeader />
+      </div>
       <div className={styles["container-wrapper"]}>
         <div className={styles.content}>
           <div className={styles.left}>
@@ -28,7 +32,9 @@ const Edit: FC = () => {
               <EditCanvas loading={loading} />
             </div>
           </div>
-          <div className={styles.right}>right</div>
+          <div className={styles.right}>
+            <RightPanel />
+          </div>
         </div>
       </div>
     </div>

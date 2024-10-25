@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {ComponentPropsType} from '../../components/questionComponents/index'
 import {produce} from "immer"
+import { getNexSelectedId } from "./utils";
 export type ComponentInfoType = {
   fe_id: string,
   type: string,
@@ -41,19 +42,29 @@ export const conponentsSlice = createSlice({
       draft.selectedId = newComponent.fe_id
     }),
       // 删除选中的组件
-    deleteComponent: produce((draft: ComponentStateType, action: PayloadAction<string>) => {
-      const selecttId = action.payload
-      const index = draft.componentList.findIndex(item => item.fe_id === selecttId)
+    deleteComponent: produce((draft: ComponentStateType) => {
+      const {componentList, selectedId} = draft
+      // 重新计算selectedId
+      const  newSelected= getNexSelectedId(selectedId, componentList)
+      const index = draft.componentList.findIndex(item => item.fe_id === selectedId)
       if(index !== -1 ) {
         draft.componentList.splice(index, 1)
       }
-      // 删除后，选中的组件为空，则选中上一个组件
-      if(draft.selectedId === selecttId && draft.componentList.length > 0) {
-        draft.selectedId = draft.componentList[index - 1].fe_id
+      draft.selectedId = newSelected
+    }),
+    // 修改组件属性
+    changeComponentProps: produce((draft: ComponentStateType, action: PayloadAction<{fe_id: string, newProps: ComponentPropsType}>) =>{
+      const {fe_id, newProps} = action.payload
+      const curComp = draft.componentList.find(item => item.fe_id === fe_id)
+      if(curComp) {
+        curComp.props = {
+          ...curComp.props,
+          ...newProps
+        }
       }
     })
   },
 
 })
-export const {resetComponents, changeSelectedId, addComponent, deleteComponent} = conponentsSlice.actions
+export const {resetComponents, changeSelectedId, addComponent, deleteComponent, changeComponentProps} = conponentsSlice.actions
 export default conponentsSlice.reducer

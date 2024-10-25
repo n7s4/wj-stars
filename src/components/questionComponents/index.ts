@@ -8,9 +8,10 @@ export type ComponentConfType = {
   title: string,
   type: string,
   Component: FC<ComponentPropsType>,
+  PropComponent: FC<ComponentPropsType>
   defaultProps: ComponentPropsType
 }
-export type ComponentConFroupType = {
+export type ComponentConfGroupType = {
   groupId: string,
   groupName: string,
   components: ComponentConfType[]
@@ -19,7 +20,7 @@ export type ComponentConFroupType = {
 const componentConfList: ComponentConfType[] = [QuestionInputConf, QuestionTitleConf]
 
 // 组件分组
-export const componentConfGroup: ComponentConFroupType[] = [
+export const componentConfGroup: ComponentConfGroupType[] = [
   {
     groupId: 'text',
     groupName: '文本显示',
