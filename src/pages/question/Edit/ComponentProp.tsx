@@ -15,7 +15,7 @@ const ComponentProp: FC = () => {
   const { selectedComponent } = useGetComponentsInfo();
   if (!selectedComponent) return <NoProp />;
 
-  const { type, props } = selectedComponent;
+  const { type, props, isLocked } = selectedComponent;
   const componentConf = getComponentConfByType(type);
   if (componentConf == null) return <NoProp />;
 
@@ -27,7 +27,7 @@ const ComponentProp: FC = () => {
   };
   return (
     <div>
-      <PropComponent {...props} onChange={changeProps} />
+      <PropComponent {...props} onChange={changeProps} disable={isLocked}/>
     </div>
   );
 };

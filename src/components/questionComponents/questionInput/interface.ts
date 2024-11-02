@@ -1,7 +1,8 @@
 export type QuestionInputPropsType = {
   title?: string
   placeholder?: string
-  onChange?: (newProps: QuestionInputPropsType) => void 
+  onChange?: (newProps: QuestionInputPropsType) => void
+  disable?: boolean
 }
 export const questionInputDefaultProps: QuestionInputPropsType = {
   title: '输入框标题',
