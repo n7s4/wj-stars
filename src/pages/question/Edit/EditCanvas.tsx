@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { changeSelectedId } from "../../../store/componentReducer";
 import { StateType } from "../../../store";
 import classNames from "classnames";
+import useBandCanvasKeyPress from "../../../hooks/useBandCanvasKeyPress";
 
 type PropsType = {
   loading: boolean;
@@ -30,6 +31,7 @@ const EditCanvas: FC<PropsType> = (props: PropsType) => {
     event.stopPropagation();
     dispatch(changeSelectedId(id));
   };
+  useBandCanvasKeyPress()
   if (loading)
     return (
       <div style={{ textAlign: "center" }}>

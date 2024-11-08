@@ -1,10 +1,17 @@
-import {BlockOutlined, CopyOutlined, DeleteOutlined, EyeInvisibleOutlined, LockOutlined} from "@ant-design/icons";
+import {
+  BlockOutlined,
+  CopyOutlined,
+  DeleteOutlined, DownOutlined,
+  EyeInvisibleOutlined,
+  LockOutlined,
+  UpOutlined
+} from "@ant-design/icons";
 import { Button, Space, Tooltip } from "antd";
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import {
   changeComponentHidden, copySelectedComponent,
-  deleteComponent, pasteCopiedComponent, toggleComponentLock,
+  deleteComponent, pasteCopiedComponent, selectNextComponent, selectPrevComponent, toggleComponentLock,
 } from "../../../store/componentReducer";
 import useGetComponentsInfo from "../../../hooks/useGetComponentsInfo";
 
@@ -32,6 +39,16 @@ const EditToolbar: FC = () => {
   const paste = () => {
     // 粘贴事件
     dispatch(pasteCopiedComponent())
+  }
+
+  // 上移
+  const upArrow = () => {
+    dispatch(selectPrevComponent())
+  }
+
+  // 下移
+  const downArrow = () => {
+   dispatch(selectNextComponent())
   }
   return (
     <div>
@@ -71,6 +88,20 @@ const EditToolbar: FC = () => {
               shape="circle"
               icon={<BlockOutlined />}
               onClick={paste}
+          ></Button>
+        </Tooltip>
+        <Tooltip title="上移" placement="top">
+          <Button
+            shape="circle"
+            icon={<UpOutlined />}
+            onClick={upArrow}
+          ></Button>
+        </Tooltip>
+        <Tooltip title="下移" placement="top">
+          <Button
+            shape="circle"
+            icon={<DownOutlined />}
+            onClick={downArrow}
           ></Button>
         </Tooltip>
       </Space>
