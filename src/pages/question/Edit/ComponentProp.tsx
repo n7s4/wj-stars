@@ -27,7 +27,7 @@ const ComponentProp: FC = () => {
   };
   return (
     <div>
-      <PropComponent {...props} onChange={changeProps} disable={isLocked}/>
+      <PropComponent {...props} onChange={changeProps} disabled={isLocked} />
     </div>
   );
 };

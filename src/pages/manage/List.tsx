@@ -1,4 +1,4 @@
-// eslint-disable-next-line
+// eslint-disabled-next-line
 import React, { FC, useEffect, useState, useRef, useMemo } from "react";
 import QuestionCard from "../../components/QuestionCard";
 import styles from "./Common.module.scss";

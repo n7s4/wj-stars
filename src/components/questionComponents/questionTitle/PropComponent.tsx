@@ -5,7 +5,7 @@ import { useForm } from "antd/es/form/Form";
 const PropComponent: FC<QuestionTitlePropsType> = (
   props: QuestionTitlePropsType
 ) => {
-  const { text, level, isCenter, onChange, disable } = props;
+  const { text, level, isCenter, onChange, disabled } = props;
   const [form] = useForm();
   useEffect(() => {
     form.setFieldsValue({ text, level, isCenter });
@@ -21,7 +21,7 @@ const PropComponent: FC<QuestionTitlePropsType> = (
       layout="vertical"
       initialValues={{ text, level, isCenter }}
       form={form}
-      disabled={disable}
+      disabled={disabled}
     >
       <Form.Item
         label="标题内容"

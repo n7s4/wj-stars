@@ -2,7 +2,9 @@ import React, { FC } from "react";
 import { QuestionInfoPropsType, QuestionInfoDefaultProps } from "./interface";
 import { Typography } from "antd";
 const { Paragraph, Title } = Typography;
-const Component: FC<QuestionInfoPropsType> = (props: QuestionInfoPropsType) => {
+const QuestionInfo: FC<QuestionInfoPropsType> = (
+  props: QuestionInfoPropsType
+) => {
   const {
     title,
     desc,
@@ -28,4 +30,4 @@ const Component: FC<QuestionInfoPropsType> = (props: QuestionInfoPropsType) => {
     </div>
   );
 };
-export default Component;
+export default QuestionInfo;
